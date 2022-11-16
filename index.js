@@ -8,20 +8,27 @@ const port = 3000;
 app.use(express.json());
 
 // enable post body parsing
-app.use(express.urlencoded({ extended: true }));
+app.use(express.urlencoded({extended: true}));
 
 // use templates
 app.set('view engine', 'ejs');
 app.set('views', './views');
 
-app.get('/inventory/delete/:id', (req, res) => {
-    db.inventory.remove({_id: mongojs.ObjectId(req.params.id)}, (err, result) => {
+let remove = function(res, id){
+    db.inventory.remove({_id: mongojs.ObjectId(id)}, (err, result) => {
         if (err) {
-            res.send(err)
+            res.send(err);
         } else {
-            res.send(result)
+            res.send(result);
         }
-    })
+    });
+}
+app.delete('/inventory/:id', (req, res) => {
+    remove(res, req.params.id)
+});
+
+app.get('/inventory/delete/:id', (req, res) => {
+    remove(res, req.params.id)
 })
 
 app.post('/inventory', (req, res) => {
@@ -63,15 +70,16 @@ app.post('/edit/:id', (req, res) => {
     console.log(req.params.id)
 
     db.inventory.findAndModify({
-        query: {_id: mongojs.ObjectId(req.params.id)},
-        update: {$set: req.body}},
+            query: {_id: mongojs.ObjectId(req.params.id)},
+            update: {$set: req.body}
+        },
         (err, result) => {
-        if (err) {
-            res.send(err)
-        } else {
-            res.redirect('/inventory')
-        }
-    })
+            if (err) {
+                res.send(err)
+            } else {
+                res.redirect('/inventory')
+            }
+        })
 })
 
 app.listen(port, () => console.log(`Example app listening on port ${port}!`))
