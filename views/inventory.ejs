@@ -3,7 +3,14 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css" rel="stylesheet"
           integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi" crossorigin="anonymous">
 </head>
-</html>
+<form action="/inventory/add" method="POST">
+    <input type="text" name="item" placeholder="Item" required>
+    <input type="number" name="qty" placeholder="Quantity" required>
+    <input type="text" name="size" placeholder="Size (JSON format)" required>
+    <input type="text" name="status" placeholder="Status" required>
+    <button type="submit">Add Inventory Item</button>
+</form>
+
 <table class="table table-striped">
     <thead class="thead-dark">
     <tr>
@@ -24,3 +31,4 @@
         </tr>
     <% }) %>
 </table>
+</html>
